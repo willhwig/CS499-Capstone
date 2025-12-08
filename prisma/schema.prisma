@@ -1,0 +1,115 @@
+// Prisma Schema for Asset Component Lifecycle Tracking System
+// CS499 Capstone Project
+//
+// I chose Prisma as the ORM because it provides excellent TypeScript integration,
+// automatic type generation, and works with SQLite for local development.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // I'm using SQLite because it's file-based and requires zero configuration.
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+/// Vendors Table
+model Vendor {
+  id          Int      @id @default(autoincrement())
+  /// Full company name (e.g., "Apex Maintenance Solutions")
+  name        String
+  /// Short identifier code (e.g., "AMS") - must be unique for quick lookups
+  code        String   @unique
+  /// Optional contact information for the vendor
+  contactInfo String?
+  /// Whether this vendor is still active in the system
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relation: A vendor can perform many service records
+  serviceRecords ServiceRecord[]
+}
+
+/// AssetComponent Table
+/// Tracks individual asset components throughout their lifecycle.
+model AssetComponent {
+  id                Int      @id @default(autoincrement())
+  /// Component part number (e.g., "B737-800-MW-001")
+  partNumber        String
+  /// Serial number - unique only within the same part number
+  serialNumber      String
+  /// Current position in the 5-visit service cycle (1-5)
+  /// Position 5 means overhaul is required
+  lifecyclePhase    Int      @default(1)
+  /// Total number of services performed over the asset's lifetime
+  totalServiceCount Int      @default(0)
+  /// Current status of the asset component
+  /// IN_SERVICE: Asset is in use or ready for use
+  /// AT_VENDOR: Asset is currently at a repair facility
+  /// RETIRED: Asset has been retired from service (but not scrapped)
+  /// BER: Beyond Economical Repair - too damaged/worn to be worth fixing
+  status            String   @default("IN_SERVICE")
+  /// Optional notes about this asset component
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Composite unique constraint: serial numbers are only unique per part number
+  @@unique([partNumber, serialNumber])
+
+  // Relation: An asset component can have many service records
+  serviceRecords ServiceRecord[]
+}
+
+/// ServiceRecord Table
+/// Records each service performed on an asset component.
+model ServiceRecord {
+  id                       Int            @id @default(autoincrement())
+  /// Reference to the asset that was serviced
+  assetComponentId         Int
+  assetComponent           AssetComponent @relation(fields: [assetComponentId], references: [id])
+  /// Reference to the vendor who performed the service
+  vendorId                 Int
+  vendor                   Vendor         @relation(fields: [vendorId], references: [id])
+  /// Type of service: STANDARD (positions 1-4) or OVERHAUL (position 5)
+  serviceType              String
+  /// Date the service was performed
+  serviceDate              DateTime
+  /// The lifecycle phase when this service was performed
+  /// This is recorded for historical accuracy - we can see what position
+  /// the asset was at when each service was done
+  lifecyclePhaseAtService  Int
+  /// Description of work performed during the service
+  workPerformed            String
+  /// Optional findings from inspection
+  findings                 String?
+  /// Whether consumables were replaced during this service
+  consumablesReplaced      Boolean        @default(false)
+  /// Name of the inspector who signed off on the work
+  inspectorName            String
+  /// Optional additional notes
+  notes                    String?
+  createdAt                DateTime       @default(now())
+}
+
+/// AuditLog Table
+/// Tracks all changes to the system for compliance and traceability.
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  /// Which table was modified (e.g., "AssetComponent", "ServiceRecord")
+  tableName String
+  /// The ID of the record that was modified
+  recordId  Int
+  /// What type of action was performed
+  action    String // CREATE, UPDATE, DELETE
+  /// Who made the change (vendor code or "SYSTEM")
+  changedBy String
+  /// Previous values as JSON string (null for CREATE operations)
+  oldValues String?
+  /// New values as JSON string
+  newValues String
+  /// When the change occurred
+  timestamp DateTime @default(now())
+}
