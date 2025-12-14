@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@sparticuz/chromium": "^119.0.0",
+    "date-fns": "^4.1.0",
+    "puppeteer-core": "^20.9.0"
+  },
+  "devDependencies": {
+    "serverless-dotenv-plugin": "^6.0.0"
+  }
+}

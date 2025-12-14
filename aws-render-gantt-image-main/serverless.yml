@@ -1,0 +1,45 @@
+#serverless.yml
+
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: awiops
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: renderganttimage
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: renderganttimage
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    AUTH_TOKEN: ${env:AUTH_TOKEN}
+  httpApi:
+    authorizers:
+      customAuthorizer:
+        type: request
+        functionName: authorizer
+
+functions:
+  render:
+    handler: handler.render
+    memorySize: 1536  
+    timeout: 30        
+    events:
+      - httpApi:
+          path: /render
+          method: post
+          authorizer: 
+            name: customAuthorizer 
+
+  authorizer:
+    handler: authorizer.authorize
+    memorySize: 128
+
+package:
+  patterns:
+    - 'node_modules/@sparticuz/chromium/**'
+    - 'node_modules/puppeteer-core/**'
+    - 'node_modules/date-fns/**'
+    - '!**/*.map'
+
+plugins:
+  - serverless-dotenv-plugin
