@@ -1,3 +1,21 @@
+# Professional Self Assessment
+
+My journey through the Computer Science program has solidified my transition from a senior program manager in the aviation industry to a capable and confident software engineer focused on solving complex, real-world problems. Throughout the program, I’ve strengthened my foundational knowledge, expanded my technical skills, and developed a portfolio that demonstrates not only what I’ve learned, but how I apply it in practice.
+
+As someone already working in a regulated industry reliant on legacy systems, I’ve seen firsthand the urgent need for modern, secure, and maintainable software solutions. This program enabled me to refine those skills while aligning with my career goal: to build and modernize software platforms for aviation and related industries. Developing the ePortfolio has given me a structured way to showcase that evolution, helping me reflect on how far I’ve come and where I want to go next.
+
+I’ve applied what I’ve learned beyond the classroom. For example, I used my understanding of software design and version control to lead internal application development at work using technologies like Power Apps, PostgreSQL, and Python. I’ve built data automation utilities, reporting pipelines, and user-facing tools that solve real business problems—experience that’s directly informed my coursework.
+
+Collaborating in team environments has been central to both my professional and academic experiences. I’ve coordinated cross-functional development efforts, worked with stakeholders to define software requirements, and integrated feedback from diverse technical and non-technical audiences. These communication and collaboration skills have strengthened my ability to deliver robust solutions that align with user and business needs.
+
+Throughout the program, I’ve built and optimized data structures and algorithms, especially in performance-sensitive environments such as inventory and forecasting tools. My experience with software engineering and database development includes designing normalized schemas, managing application logic, and deploying secure, cloud-connected systems. Security principles such as input validation, access control, and secure database interaction—especially using tools like Prisma ORM—have been essential in both academic projects and workplace tools I’ve built.
+
+The artifacts presented in my ePortfolio represent a cross-section of my capabilities across software design, algorithms, databases, and security. Together, they tell the story of my growth as a developer and my readiness to build scalable, secure, and maintainable software. Each artifact has been enhanced with documentation and narrative to illustrate the decisions behind the implementation, demonstrating not just what I built, but how and why I built it the way I did.
+
+This portfolio is more than a capstone deliverable—it’s a launching point. It reflects both who I am as a professional and where I’m going next: deeper into software engineering, with a clear focus on quality, modern development practices, and continuous improvement.
+
+---
+
 # Asset Component Lifecycle Tracking System
 
 **CS499 Capstone Project**
